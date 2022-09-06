@@ -51,7 +51,8 @@ public class StudentManager {
 
     public List<GoodStudent> getSortedGoodStudents(List<GoodStudent> list) {
         return list.stream()
-                .sorted(Comparator.comparing(GoodStudent::getGpa).reversed().thenComparing(GoodStudent::getFullname))
+                .sorted(Comparator.comparing(GoodStudent::getGpa).reversed()
+                        .thenComparing(GoodStudent::getFullname))
                 .toList();
 
     }
@@ -60,7 +61,6 @@ public class StudentManager {
         return list.stream()
                 .sorted(Comparator.comparing(NornalStudent::getEnglishScore).reversed().thenComparing(NornalStudent::getFullname))
                 .toList();
-
     }
 
 

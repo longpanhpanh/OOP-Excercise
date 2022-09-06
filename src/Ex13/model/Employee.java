@@ -23,17 +23,10 @@ public abstract class Employee implements Serializable {
         this.phone = phone;
         this.email = email;
         this.certificates = certificates;
+
     }
 
     public abstract void showInfo();
-
-    public static int getCount() {
-        return count;
-    }
-
-    public static void setCount(int count) {
-        Employee.count = count;
-    }
 
     public String getId() {
         return id;

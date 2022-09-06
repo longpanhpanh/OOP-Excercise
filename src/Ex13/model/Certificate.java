@@ -1,15 +1,18 @@
 package Ex13.model;
 
-public class Certificate {
+import java.io.Serializable;
+import java.time.LocalDate;
+
+public class Certificate implements Serializable {
     private String certificateId;
     private String certificateName;
     private String certificateRank;
-    private String certificateDate;
+    private LocalDate certificateDate;
 
     public Certificate() {
     }
 
-    public Certificate(String certificateId, String certificateName, String certificateRank, String certificateDate) {
+    public Certificate(String certificateId, String certificateName, String certificateRank, LocalDate certificateDate) {
         this.certificateId = certificateId;
         this.certificateName = certificateName;
         this.certificateRank = certificateRank;
@@ -40,11 +43,11 @@ public class Certificate {
         this.certificateRank = certificateRank;
     }
 
-    public String getCertificateDate() {
+    public LocalDate getCertificateDate() {
         return certificateDate;
     }
 
-    public void setCertificateDate(String certificateDate) {
+    public void setCertificateDate(LocalDate certificateDate) {
         this.certificateDate = certificateDate;
     }
 }
