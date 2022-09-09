@@ -1,5 +1,6 @@
 package Ex13.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,6 +13,9 @@ public abstract class Employee implements Serializable {
     protected String phone;
     protected String email;
     protected List<Certificate> certificates;
+
+    @Serial
+    private static final long serialVersionUID = 5;
 
     public Employee() {
     }

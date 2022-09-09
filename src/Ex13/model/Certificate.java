@@ -50,4 +50,14 @@ public class Certificate implements Serializable {
     public void setCertificateDate(LocalDate certificateDate) {
         this.certificateDate = certificateDate;
     }
+
+    @Override
+    public String toString() {
+        return "Certificate{" +
+                "certificateId='" + certificateId + '\'' +
+                ", certificateName='" + certificateName + '\'' +
+                ", certificateRank='" + certificateRank + '\'' +
+                ", certificateDate=" + certificateDate +
+                '}';
+    }
 }

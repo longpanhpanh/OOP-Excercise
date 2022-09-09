@@ -3,8 +3,6 @@ package Ex13;
 import Ex13.UI.UIManager;
 import Ex13.model.Employee;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class Main {
@@ -23,6 +21,7 @@ public class Main {
             System.out.println("Enter 6: List All Intern");
             System.out.println("Enter 7: List All Employee and count");
             System.out.println("Enter 8: Save to file");
+            System.out.println("Enter 9: Read File");
             System.out.println("Enter 0: Exit");
             int choice = sc.nextInt();
 
@@ -77,6 +76,11 @@ public class Main {
                 case 8:
                     sc.nextLine();
                     uiManager.saveToFile();
+                    break;
+
+                case 9:
+                    sc.nextLine();
+                    uiManager.readFile();
                     break;
                 case 0:
                     System.exit(100);

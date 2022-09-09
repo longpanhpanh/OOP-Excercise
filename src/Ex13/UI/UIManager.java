@@ -17,7 +17,7 @@ import java.util.*;
 public class UIManager {
     Scanner scanner = new Scanner(System.in);
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-    private EmployeeManager employeeManager = new EmployeeManager();
+    private final EmployeeManager employeeManager = new EmployeeManager();
 
 
 
@@ -52,8 +52,17 @@ public class UIManager {
             String name = scanner.nextLine();
             System.out.println("Enter rank: ");
             String rank = scanner.nextLine();
-            System.out.println("Enter date: ");
-            LocalDate date = LocalDate.parse(scanner.nextLine(), dateTimeFormatter);
+            LocalDate date;
+            while(true) {
+                try {
+                    System.out.println("Enter date: ");
+                    String dateStr = scanner.nextLine();
+                    date = LocalDate.parse(dateStr, dateTimeFormatter);
+                    break;
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid Date Format");
+                }
+            }
             certificateList.add(new Certificate(id, name, rank, date));
             System.out.println("Press 0 to continue inserting, 1 to back to the Insert Employee");
             int choice = scanner.nextInt();
@@ -69,21 +78,68 @@ public class UIManager {
 
     private Map<String, String> insertCommonInfo() {
         Map<String, String> map = new HashMap<>();
+
         System.out.print("Input ID: ");
         String id = scanner.nextLine();
         map.put("id", id);
-        System.out.print("Input Name: ");
-        String name = scanner.nextLine();
-        map.put("name", name);
-        System.out.print("Input Phone: ");
-        String phone = scanner.nextLine();
-        map.put("phone", phone);
-        System.out.print("Input Email: ");
-        String email = scanner.nextLine();
-        map.put("email", email);
-        System.out.println("Input date of birth: ");
-        String dob = scanner.nextLine();
-        map.put("dob", dob);
+
+        while(true) {
+            System.out.print("Input Name: ");
+            String name = scanner.nextLine();
+            try {
+                if (ValidatorService.checkFullname(name)) {
+                    map.put("name", name);
+                    break;
+                }
+            } catch (FullnameException e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        while (true) {
+            System.out.println("Input Phone Number: ");
+            String phone = scanner.nextLine();
+            try {
+                if (ValidatorService.checkPhone(phone)) {
+                    map.put("phone", phone);
+                    break;
+                }
+            } catch (PhoneException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        while(true) {
+            System.out.print("Input Email: ");
+            String email = scanner.nextLine();
+            try {
+                if (ValidatorService.checkEmail(email)) {
+                    map.put("email", email);
+                    break;
+                }
+            } catch (EmailException e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        while(true) {
+            System.out.println("Input date of birth: ");
+            String dob = scanner.nextLine();
+            try {
+                if (ValidatorService.checkBirthday(LocalDate.parse(dob, dateTimeFormatter))) {
+                    map.put("dob", dob);
+                    break;
+                }
+            } catch (BirthdayException e) {
+                System.out.println(e.getMessage());
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid birthday format");
+            }
+
+        }
+
         return map;
     }
 
@@ -92,8 +148,16 @@ public class UIManager {
         System.out.println("Certificates: ");
         List<Certificate> certificateList = insertCertificate();
         scanner.nextLine();
-        System.out.println("Exp In Year: ");
-        int yearExp = Integer.parseInt(scanner.nextLine());
+        int yearExp = 0;
+        while(true) {
+            try {
+                System.out.println("Exp In Year: ");
+                yearExp = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid year format. Pls try again");
+            }
+        }
         System.out.println("Skill: ");
         String skills = scanner.nextLine();
         return new Experience(commonInfo.get("id"),
@@ -103,7 +167,7 @@ public class UIManager {
                 commonInfo.get("email"), certificateList, yearExp, skills);
     }
 
-    private Fresher insertFresher() {
+    private Fresher insertFresher() throws PhoneException, BirthdayException, FullnameException, EmailException {
         Map<String, String> commonInfo = insertCommonInfo();
         System.out.println("Certificates: ");
         List<Certificate> certificateList = insertCertificate();
@@ -125,7 +189,7 @@ public class UIManager {
 
     }
 
-    private Intern insertIntern() {
+    private Intern insertIntern() throws PhoneException, BirthdayException, FullnameException, EmailException {
         Map<String, String> commonInfo = insertCommonInfo();
         System.out.println("Certificates: ");
         List<Certificate> certificateList = insertCertificate();
@@ -155,7 +219,18 @@ public class UIManager {
     public void saveToFile() {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("D:/workspace/Spring Project/OOP/src/Ex13/data.txt"))){
             outputStream.writeObject(employeeManager.findAll());
+            outputStream.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readFile() {
+        try(ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("D:/workspace/Spring Project/OOP/src/Ex13/data.txt"))) {
+            List<Employee> list = (List<Employee>) inputStream.readObject();
+            System.out.println(list);
+            inputStream.close();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
